@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>네 컷 소설관 — 기승전결 숏폼 소설 아카이브</title>
+  <meta name="description" content="기·승·전·결 네 장의 카드와 마지막 한 장의 클라이맥스 컷신으로 읽는 창작 단편 소설 아카이브" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #111110;
+      --bg-elevated: #1a1917;
+      --bg-card: #21201d;
+      --paper: #f6f3ec;
+      --paper-ink: #1b1a18;
+      --paper-sub: #57534e;
+      --text: #f3f0e8;
+      --text-muted: #9e998e;
+      --accent: #d97742;
+      --accent-soft: rgba(217, 119, 66, 0.16);
+      --border: rgba(243, 240, 232, 0.11);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      --serif: 'Gowun Batang', Georgia, serif;
+      --sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header / Hero */
+    header.hero {
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      background: var(--accent-soft);
+      color: #f29b6b;
+      border: 1px solid rgba(217, 119, 66, 0.3);
+    }
+
+    .repo-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .repo-link:hover {
+      color: var(--text);
+      border-color: rgba(243, 240, 232, 0.3);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    h1.hero-title {
+      font-family: var(--serif);
+      font-size: clamp(1.9rem, 4vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.65rem;
+      color: var(--paper);
+    }
+
+    p.hero-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 680px;
+    }
+
+    .format-rule-bar {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+      font-size: 0.83rem;
+      color: var(--text-muted);
+    }
+
+    .format-step {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      padding: 0.32rem 0.7rem;
+      border-radius: 6px;
+      color: #d6d1c7;
+    }
+
+    /* Filter Bar */
+    .controls {
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--bg-elevated);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.48rem 1rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--sans);
+    }
+
+    .filter-btn:hover {
+      color: var(--text);
+      border-color: rgba(243, 240, 232, 0.25);
+    }
+
+    .filter-btn.active {
+      background: var(--paper);
+      color: var(--paper-ink);
+      border-color: var(--paper);
+      font-weight: 600;
+    }
+
+    /* Novel Card Grid */
+    main.container {
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem 4rem;
+      flex: 1;
+    }
+
+    .novel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .novel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+      position: relative;
+    }
+
+    .novel-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(217, 119, 66, 0.5);
+      box-shadow: var(--shadow);
+    }
+
+    .card-thumb-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #141312;
+      overflow: hidden;
+    }
+
+    .card-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(8px) brightness(0.65) contrast(1.08);
+      transform: scale(1.08);
+      transition: filter 0.35s ease, transform 0.35s ease;
+    }
+
+    .novel-card:hover .card-thumb {
+      filter: blur(5px) brightness(0.75) contrast(1.08);
+      transform: scale(1.04);
+    }
+
+    .thumb-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(17,17,16,0.15) 0%, rgba(33,32,29,0.92) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1rem 1.15rem;
+    }
+
+    .thumb-top-badges {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .genre-badge {
+      background: rgba(17, 17, 16, 0.78);
+      backdrop-filter: blur(6px);
+      color: #f3f0e8;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+    }
+
+    .spoiler-badge {
+      background: rgba(0, 0, 0, 0.65);
+      color: #d6d1c7;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card-body {
+      padding: 1.25rem 1.35rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-title {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--paper);
+      margin-bottom: 0.6rem;
+    }
+
+    .card-hook {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      color: #c7c2b8;
+      line-height: 1.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex: 1;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .read-cta {
+      color: #f29b6b;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* Modal Reader (Card News Style) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 8, 7, 0.86);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .reader-modal {
+      width: 100%;
+      max-width: 640px;
+      max-height: 92vh;
+      background: var(--bg-elevated);
+      border: 1px solid rgba(243, 240, 232, 0.16);
+      border-radius: 20px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.75);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .reader-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .reader-title-wrap {
+      min-width: 0;
+    }
+
+    .reader-genre {
+      font-size: 0.74rem;
+      color: #f29b6b;
+      font-weight: 600;
+      display: block;
+    }
+
+    .reader-title {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--paper);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .reader-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex-shrink: 0;
+    }
+
+    .mode-toggle-btn, .close-btn {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: background 0.15s ease;
+    }
+
+    .mode-toggle-btn:hover, .close-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Step Indicator Pills (기·승·전·결) */
+    .step-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.4rem;
+      padding: 0.75rem 1.25rem;
+      background: #141311;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.42rem 0.3rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .step-pill.active {
+      background: var(--paper);
+      color: var(--paper-ink);
+      border-color: var(--paper);
+    }
+
+    .step-pill.completed {
+      border-color: rgba(217, 119, 66, 0.45);
+      color: #e6c6b3;
+    }
+
+    /* Card News Page Viewport */
+    .card-viewport {
+      padding: 1.5rem 1.5rem;
+      overflow-y: auto;
+      flex: 1;
+      background: var(--paper);
+      color: var(--paper-ink);
+    }
+
+    .slide-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid rgba(27, 26, 24, 0.12);
+    }
+
+    .slide-ep-title {
+      font-family: var(--serif);
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #1b1a18;
+    }
+
+    .slide-step-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #8c4f2b;
+      background: rgba(217, 119, 66, 0.15);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+    }
+
+    .slide-body {
+      font-family: var(--serif);
+      font-size: 1.06rem;
+      line-height: 1.88;
+      color: #1f1e1b;
+      white-space: pre-line;
+      word-break: keep-all;
+    }
+
+    /* Climax Cutscene Box at the end of Episode 4 */
+    .climax-cutscene-box {
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 2px dashed rgba(27, 26, 24, 0.18);
+    }
+
+    .climax-label {
+      font-family: var(--sans);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #57534e;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .climax-img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      display: block;
+    }
+
+    /* Bottom Navigation of Modal */
+    .reader-nav {
+      padding: 0.9rem 1.25rem;
+      background: #141311;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .nav-btn {
+      background: var(--bg-card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.55rem 1.1rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: all 0.15s ease;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      border-color: rgba(243, 240, 232, 0.35);
+      background: #2b2925;
+    }
+
+    .nav-btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .nav-btn.primary:hover:not(:disabled) {
+      filter: brightness(1.08);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .page-counter {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* All-in-one / Threads Copy View */
+    .all-episodes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .threads-copy-card {
+      background: #fffdf9;
+      border: 1px solid rgba(27, 26, 24, 0.15);
+      border-radius: 12px;
+      padding: 1.1rem;
+    }
+
+    .threads-copy-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.65rem;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      color: #57534e;
+    }
+
+    .copy-ep-btn {
+      background: #1b1a18;
+      color: #f6f3ec;
+      border: none;
+      padding: 0.32rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .copy-ep-btn:hover {
+      background: var(--accent);
+    }
+
+    /* Footer */
+    footer.site-footer {
+      border-top: 1px solid var(--border);
+      padding: 2.2rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.84rem;
+    }
+
+    footer.site-footer a {
+      color: #d6d1c7;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    @media (max-width: 600px) {
+      header.hero {
+        padding: 2.2rem 1.15rem 1.5rem;
+      }
+      .card-viewport {
+        padding: 1.2rem 1.15rem;
+      }
+      .slide-body {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-top">
+      <span class="brand-pill">✦ 4-CUT SHORT FICTION ARCHIVE</span>
+      <a class="repo-link" href="https://github.com/jeiel85/threads-short-novels" id="repoLink" target="_blank" rel="noopener">
+        GitHub 저장소 ↗
+      </a>
+    </div>
+    <h1 class="hero-title">네 컷 소설관</h1>
+    <p class="hero-desc">
+      기(起)·승(承)·전(轉)·결(結) 500자 내외의 네 페이지와 마지막 한 장의 클라이맥스 컷신으로 완성되는 숏폼 소설 아카이브입니다. 카드를 눌러 한 페이지씩 넘겨보세요.
+    </p>
+    <div class="format-rule-bar">
+      <span class="format-step">1화 · 기(起) 발단</span>
+      <span>→</span>
+      <span class="format-step">2화 · 승(承) 전개</span>
+      <span>→</span>
+      <span class="format-step">3화 · 전(轉) 위기/반전</span>
+      <span>→</span>
+      <span class="format-step">4화 · 결(結) 결말 + 클라이맥스 컷신</span>
+    </div>
+  </header>
+
+  <section class="controls">
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-btn active" data-category="all">전체 작품</button>
+      <button class="filter-btn" data-category="mystery">추리·미스터리·스릴러</button>
+      <button class="filter-btn" data-category="warm">일상 반전·감동</button>
+      <button class="filter-btn" data-category="catharsis">현실 공감·사이다</button>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="novel-grid" id="novelGrid"></div>
+  </main>
+
+  <!-- Card News Modal Viewer -->
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="reader-modal" role="dialog" aria-modal="true">
+      <div class="reader-header">
+        <div class="reader-title-wrap">
+          <span class="reader-genre" id="modalGenre"></span>
+          <h2 class="reader-title" id="modalTitle"></h2>
+        </div>
+        <div class="reader-actions">
+          <button class="mode-toggle-btn" id="modeToggleBtn" title="쓰레드 원클릭 복사용 전체보기 전환">
+            전체보기 / 복사
+          </button>
+          <button class="close-btn" id="closeModalBtn">닫기 ✕</button>
+        </div>
+      </div>
+
+      <div class="step-bar" id="stepBar"></div>
+
+      <div class="card-viewport" id="cardViewport"></div>
+
+      <div class="reader-nav" id="readerNav">
+        <button class="nav-btn" id="prevSlideBtn">← 이전 화</button>
+        <span class="page-counter" id="pageCounter">1 / 4</span>
+        <button class="nav-btn primary" id="nextSlideBtn">다음 화 →</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>
+      © 2026 <strong>jeiel85</strong>. 본 아카이브의 모든 창작 단편 소설 및 클라이맥스 삽화는
+      <a href="https://creativecommons.org/licenses/by/4.0/deed.ko" target="_blank" rel="noopener">
+        크리에이티브 커먼즈 저작자 표시 4.0 국제 라이선스 (CC BY 4.0)
+      </a>에 따라 출처(저작자 및 링크)를 명시하면 자유롭게 공유할 수 있습니다.
+    </p>
+  </footer>
+
+  <script>
+    let allNovels = [];
+    let currentFilter = 'all';
+    let activeNovel = null;
+    let currentSlideIdx = 0;
+    let isAllViewMode = false;
+
+    const novelGrid = document.getElementById('novelGrid');
+    const filterTabs = document.getElementById('filterTabs');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalGenre = document.getElementById('modalGenre');
+    const modalTitle = document.getElementById('modalTitle');
+    const stepBar = document.getElementById('stepBar');
+    const cardViewport = document.getElementById('cardViewport');
+    const readerNav = document.getElementById('readerNav');
+    const prevSlideBtn = document.getElementById('prevSlideBtn');
+    const nextSlideBtn = document.getElementById('nextSlideBtn');
+    const pageCounter = document.getElementById('pageCounter');
+    const modeToggleBtn = document.getElementById('modeToggleBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    async function loadNovels() {
+      try {
+        const res = await fetch('./novels.json?v=' + Date.now());
+        allNovels = await res.json();
+        renderGrid();
+        checkUrlHash();
+      } catch (err) {
+        novelGrid.innerHTML = `<p style="color:var(--text-muted)">작품 목록을 불러오는 중 오류가 발생했습니다.</p>`;
+      }
+    }
+
+    function renderGrid() {
+      const filtered = currentFilter === 'all'
+        ? allNovels
+        : allNovels.filter(n => n.category === currentFilter);
+
+      novelGrid.innerHTML = filtered.map(novel => `
+        <article class="novel-card" data-slug="${novel.slug}">
+          <div class="card-thumb-wrap">
+            <img class="card-thumb" src="${novel.climaxImage}" alt="${novel.title} 클라이맥스 컷신 미리보기" loading="lazy" />
+            <div class="thumb-overlay">
+              <div class="thumb-top-badges">
+                <span class="genre-badge">${novel.badge}</span>
+                <span class="spoiler-badge">4화 컷신 수록</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">${novel.title}</h3>
+            <p class="card-hook">“${novel.hook}”</p>
+            <div class="card-footer">
+              <span>기·승·전·결 ${novel.episodes.length}화 완결</span>
+              <span class="read-cta">카드뉴스로 읽기 →</span>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      document.querySelectorAll('.novel-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const slug = card.getAttribute('data-slug');
+          openNovel(slug);
+        });
+      });
+    }
+
+    function openNovel(slug) {
+      const found = allNovels.find(n => n.slug === slug);
+      if (!found) return;
+      activeNovel = found;
+      currentSlideIdx = 0;
+      isAllViewMode = false;
+      history.replaceState(null, '', '#' + slug);
+
+      modalGenre.textContent = activeNovel.genre;
+      modalTitle.textContent = activeNovel.title;
+      modalBackdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      renderModalContent();
+    }
+
+    function closeModal() {
+      modalBackdrop.classList.remove('open');
+      document.body.style.overflow = '';
+      activeNovel = null;
+      history.replaceState(null, '', window.location.pathname);
+    }
+
+    function renderModalContent() {
+      if (!activeNovel) return;
+      const eps = activeNovel.episodes;
+
+      if (isAllViewMode) {
+        modeToggleBtn.textContent = '카드뉴스 뷰로 보기';
+        stepBar.style.display = 'none';
+        readerNav.style.display = 'none';
+
+        cardViewport.innerHTML = `
+          <div class="all-episodes-list">
+            ${eps.map((ep, idx) => `
+              <div class="threads-copy-card">
+                <div class="threads-copy-head">
+                  <span><strong>${ep.step}</strong> · ${ep.charCount}자 (쓰레드 1게시물 분량)</span>
+                  <button class="copy-ep-btn" data-idx="${idx}">${ep.number}화 본문 복사</button>
+                </div>
+                <div class="slide-body">${escapeHtml(ep.rawCopy)}</div>
+              </div>
+            `).join('')}
+            <div class="climax-cutscene-box">
+              <div class="climax-label">
+                <span>✦ 마지막 4화 첨부용 클라이맥스 컷신</span>
+                <a href="${activeNovel.climaxImage}" download style="color:#8c4f2b;text-decoration:underline;">이미지 저장</a>
+              </div>
+              <img class="climax-img" src="${activeNovel.climaxImage}" alt="${activeNovel.title} 클라이맥스 컷신" />
+            </div>
+          </div>
+        `;
+
+        cardViewport.querySelectorAll('.copy-ep-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const idx = Number(btn.getAttribute('data-idx'));
+            await navigator.clipboard.writeText(eps[idx].rawCopy);
+            const orig = btn.textContent;
+            btn.textContent = '✓ 복사 완료!';
+            setTimeout(() => { btn.textContent = orig; }, 1400);
+          });
+        });
+        cardViewport.scrollTop = 0;
+        return;
+      }
+
+      modeToggleBtn.textContent = '전체보기 / 복사';
+      stepBar.style.display = 'grid';
+      readerNav.style.display = 'flex';
+
+      stepBar.innerHTML = eps.map((ep, idx) => {
+        const cls = idx === currentSlideIdx ? 'active' : (idx < currentSlideIdx ? 'completed' : '');
+        return `<button class="step-pill ${cls}" data-idx="${idx}">${ep.number}화 · ${ep.step.split('(')[0]}</button>`;
+      }).join('');
+
+      stepBar.querySelectorAll('.step-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          currentSlideIdx = Number(pill.getAttribute('data-idx'));
+          renderModalContent();
+        });
+      });
+
+      const ep = eps[currentSlideIdx];
+      const isLast = currentSlideIdx === eps.length - 1;
+
+      cardViewport.innerHTML = `
+        <div class="slide-meta">
+          <h3 class="slide-ep-title">${escapeHtml(ep.title)}</h3>
+          <span class="slide-step-tag">${ep.step}</span>
+        </div>
+        <div class="slide-body">${escapeHtml(ep.body)}</div>
+        ${isLast ? `
+          <div class="climax-cutscene-box">
+            <div class="climax-label">
+              <span>✦ CLIMAX CUTSCENE — 마지막 장면</span>
+            </div>
+            <img class="climax-img" src="${activeNovel.climaxImage}" alt="${activeNovel.title} 클라이맥스 컷신" />
+          </div>
+        ` : ''}
+      `;
+
+      cardViewport.scrollTop = 0;
+      prevSlideBtn.disabled = currentSlideIdx === 0;
+      pageCounter.textContent = `${currentSlideIdx + 1} / ${eps.length}`;
+
+      if (isLast) {
+        nextSlideBtn.textContent = '목록으로 닫기 ✓';
+      } else {
+        nextSlideBtn.textContent = `다음 (${currentSlideIdx + 2}화) →`;
+      }
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    prevSlideBtn.addEventListener('click', () => {
+      if (currentSlideIdx > 0) {
+        currentSlideIdx--;
+        renderModalContent();
+      }
+    });
+
+    nextSlideBtn.addEventListener('click', () => {
+      if (!activeNovel) return;
+      if (currentSlideIdx < activeNovel.episodes.length - 1) {
+        currentSlideIdx++;
+        renderModalContent();
+      } else {
+        closeModal();
+      }
+    });
+
+    modeToggleBtn.addEventListener('click', () => {
+      isAllViewMode = !isAllViewMode;
+      renderModalContent();
+    });
+
+    closeModalBtn.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) closeModal();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (!activeNovel) return;
+      if (e.key === 'Escape') closeModal();
+      if (!isAllViewMode && e.key === 'ArrowRight' && currentSlideIdx < activeNovel.episodes.length - 1) {
+        currentSlideIdx++;
+        renderModalContent();
+      }
+      if (!isAllViewMode && e.key === 'ArrowLeft' && currentSlideIdx > 0) {
+        currentSlideIdx--;
+        renderModalContent();
+      }
+    });
+
+    filterTabs.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterTabs.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-category');
+        renderGrid();
+      });
+    });
+
+    function checkUrlHash() {
+      const hash = window.location.hash.replace('#', '').trim();
+      if (hash) {
+        openNovel(hash);
+      }
+    }
+
+    loadNovels();
+  </script>
+</body>
+</html>
