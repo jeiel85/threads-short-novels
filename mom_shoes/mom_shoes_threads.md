@@ -8,7 +8,7 @@
 
 ## 1화
 
-![1화 스틸컷](./images/mom_shoes_ep1.jpg)
+![1화 스틸컷](./mom_shoes_ep1.jpg)
 
 ```text
 오늘 아침도 현관에서 기어이 큰소리를 내고 말았다.
@@ -24,7 +24,7 @@
 
 ## 2화
 
-![2화 스틸컷](./images/mom_shoes_ep2.jpg)
+![2화 스틸컷](./mom_shoes_ep2.jpg)
 
 ```text
 어린이집 문을 나서는데 아까부터 구두 앞코에 무언가 자꾸 배겼다.
@@ -39,7 +39,7 @@
 
 ## 3화 (완결)
 
-![3화 스틸컷](./images/mom_shoes_ep3.jpg)
+![3화 스틸컷](./mom_shoes_ep3.jpg)
 
 ```text
 저녁에 하원한 아이를 품에 꼭 안고 물었다.
