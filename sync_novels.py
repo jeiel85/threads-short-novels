@@ -9,38 +9,44 @@ from datetime import date
 ROOT = pathlib.Path(__file__).resolve().parent
 
 ORDER_META = {
-    "memory_auditor": {
+    "lost_time_office": {
         "order": 1,
+        "category": "daily",
+        "date": "2026-10-20",
+        "badge": "감성 판타지·로맨스",
+    },
+    "memory_auditor": {
+        "order": 2,
         "category": "mystery",
         "date": "2026-10-20",
         "badge": "SF 추리·스릴러",
     },
     "auto_connect": {
-        "order": 2,
+        "order": 3,
         "category": "mystery",
         "date": "2026-10-18",
         "badge": "미스터리·스릴러",
     },
     "behind_the_wall": {
-        "order": 3,
+        "order": 4,
         "category": "mystery",
         "date": "2026-10-16",
         "badge": "미스터리·스릴러",
     },
     "carrot_appliance": {
-        "order": 4,
+        "order": 5,
         "category": "daily",
         "date": "2026-10-19",
         "badge": "일상·공감",
     },
     "doorbell_11pm": {
-        "order": 5,
+        "order": 6,
         "category": "daily",
         "date": "2026-10-19",
         "badge": "일상·드라마",
     },
     "mom_shoes": {
-        "order": 6,
+        "order": 7,
         "category": "daily",
         "date": "2026-10-19",
         "badge": "일상·드라마",
@@ -49,7 +55,7 @@ ORDER_META = {
 
 
 def infer_category(genre_text: str) -> str:
-    if any(k in genre_text for k in ["일상", "감동", "가족", "휴먼", "공감", "드라마"]):
+    if any(k in genre_text for k in ["일상", "감동", "가족", "휴먼", "공감", "드라마", "감성", "로맨스"]):
         return "daily"
     return "mystery"
 
