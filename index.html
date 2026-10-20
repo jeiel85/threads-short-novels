@@ -4,7 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>네 컷 소설관</title>
-  <meta name="description" content="네 번의 페이지로 읽는 짧은 소설 모음" />
+  <meta name="description" content="네 번의 페이지와 마지막 한 장의 컷신으로 읽는 짧은 이야기" />
+  <meta name="theme-color" content="#111110" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="네 컷 소설관" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -66,6 +73,64 @@
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--paper);
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+    }
+
+    .install-btn {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(217, 119, 66, 0.42);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 0.38rem;
+      padding: 0.42rem 0.9rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .install-btn.visible {
+      display: inline-flex;
+    }
+
+    .install-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .pwa-toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #262420;
+      color: var(--paper);
+      border: 1px solid rgba(217, 119, 66, 0.45);
+      box-shadow: var(--shadow);
+      padding: 0.78rem 1.2rem;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      z-index: 2500;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      max-width: calc(100vw - 2rem);
+      text-align: center;
+    }
+
+    .pwa-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     .repo-link {
@@ -551,12 +616,19 @@
   <header class="hero">
     <div class="hero-top">
       <h1 class="hero-title">네 컷 소설관</h1>
-      <a class="repo-link" href="https://github.com/jeiel85/threads-short-novels" target="_blank" rel="noopener">
-        GitHub ↗
-      </a>
+      <div class="hero-actions">
+        <button class="install-btn" id="installAppBtn" type="button" aria-label="앱으로 설치">
+          📲 앱 설치
+        </button>
+        <a class="repo-link" href="https://github.com/jeiel85/threads-short-novels" target="_blank" rel="noopener">
+          GitHub ↗
+        </a>
+      </div>
     </div>
     <p class="hero-desc">네 번의 페이지와 마지막 한 장의 컷신으로 읽는 짧은 이야기</p>
   </header>
+
+  <div class="pwa-toast" id="pwaToast" role="status" aria-live="polite"></div>
 
   <section class="controls">
     <div class="filter-tabs" id="filterTabs">
@@ -835,6 +907,60 @@
       if (hash) {
         openNovel(hash);
       }
+    }
+
+    // PWA Service Worker & Install Prompt
+    let deferredInstallPrompt = null;
+    const installAppBtn = document.getElementById('installAppBtn');
+    const pwaToast = document.getElementById('pwaToast');
+
+    function showPwaToast(msg) {
+      pwaToast.textContent = msg;
+      pwaToast.classList.add('show');
+      setTimeout(() => pwaToast.classList.remove('show'), 4200);
+    }
+
+    const isStandalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.navigator.standalone === true;
+
+    const isIos = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+
+    if (!isStandalone && isIos) {
+      installAppBtn.classList.add('visible');
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      if (!isStandalone) {
+        installAppBtn.classList.add('visible');
+      }
+    });
+
+    installAppBtn.addEventListener('click', async () => {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        const { outcome } = await deferredInstallPrompt.userChoice;
+        if (outcome === 'accepted') {
+          installAppBtn.classList.remove('visible');
+        }
+        deferredInstallPrompt = null;
+      } else if (isIos) {
+        showPwaToast('Safari 하단 공유 버튼(↑)을 누른 뒤 "홈 화면에 추가"를 선택해 설치하세요.');
+      }
+    });
+
+    window.addEventListener('appinstalled', () => {
+      installAppBtn.classList.remove('visible');
+      deferredInstallPrompt = null;
+      showPwaToast('네 컷 소설관이 홈 화면에 설치되었습니다!');
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
     }
 
     loadNovels();
