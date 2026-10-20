@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-sync_novels.py
-각 소설 폴더(<slug>/<slug>_threads.md 및 <slug>/<slug>_climax.jpg)를 읽어
-랜딩 페이지(index.html)에서 사용하는 novels.json을 자동으로 생성합니다.
-"""
 
 import json
 import pathlib
@@ -18,48 +13,44 @@ ORDER_META = {
         "order": 1,
         "category": "mystery",
         "date": "2026-10-20",
-        "badge": "SF 추리·반전",
+        "badge": "SF 추리·스릴러",
     },
     "auto_connect": {
         "order": 2,
         "category": "mystery",
         "date": "2026-10-18",
-        "badge": "현실 밀착 스릴러",
+        "badge": "미스터리·스릴러",
     },
     "behind_the_wall": {
         "order": 3,
         "category": "mystery",
         "date": "2026-10-16",
-        "badge": "현실 밀착 미스터리",
+        "badge": "미스터리·스릴러",
     },
     "carrot_appliance": {
         "order": 4,
-        "category": "catharsis",
+        "category": "daily",
         "date": "2026-10-19",
-        "badge": "일상 사이다·반전",
+        "badge": "일상·공감",
     },
     "doorbell_11pm": {
         "order": 5,
-        "category": "warm",
+        "category": "daily",
         "date": "2026-10-19",
-        "badge": "일상 반전·감동",
+        "badge": "일상·드라마",
     },
     "mom_shoes": {
         "order": 6,
-        "category": "warm",
+        "category": "daily",
         "date": "2026-10-19",
-        "badge": "가족 휴먼 드라마",
+        "badge": "일상·드라마",
     },
 }
 
-STEP_NAMES = ["기(起)", "승(承)", "전(轉)", "결(結)"]
-
 
 def infer_category(genre_text: str) -> str:
-    if any(k in genre_text for k in ["사이다", "블랙코미디", "공감극"]):
-        return "catharsis"
-    if any(k in genre_text for k in ["감동", "가족", "휴먼", "힐링"]):
-        return "warm"
+    if any(k in genre_text for k in ["일상", "감동", "가족", "휴먼", "공감", "드라마"]):
+        return "daily"
     return "mystery"
 
 
@@ -71,15 +62,12 @@ def parse_novel(folder: pathlib.Path) -> dict | None:
 
     raw = md_file.read_text(encoding="utf-8")
 
-    # 1. 제목 추출
     title_match = re.search(r"^#\s+(.+?)(?:\s*—|\s*$)", raw, re.MULTILINE)
     title = title_match.group(1).strip() if title_match else slug
 
-    # 2. 장르 추출
-    genre_match = re.search(r"^>\s*장르:\s*(.+?)(?:\s*/|$)", raw, re.MULTILINE)
-    genre = genre_match.group(1).strip() if genre_match else "창작 단편"
+    genre_match = re.search(r"^>\s*(?:장르:\s*)?(.+?)(?:\s*/|$)", raw, re.MULTILINE)
+    genre = genre_match.group(1).strip() if genre_match else "단편"
 
-    # 3. 기승전결 4화 텍스트 블록 추출
     blocks = re.findall(r"```text\s*([\s\S]*?)\s*```", raw)
     episodes = []
 
@@ -91,22 +79,18 @@ def parse_novel(folder: pathlib.Path) -> dict | None:
 
         if lines and re.match(r"^\[(\d+화[^\]]*)\]\s*(.*)$", lines[0]):
             m = re.match(r"^\[(\d+화[^\]]*)\]\s*(.*)$", lines[0])
-            ep_label = m.group(1).strip()
             ep_sub = m.group(2).strip()
-            ep_title = f"[{ep_label}] {ep_sub}" if ep_sub else f"[{ep_label}]"
+            ep_title = ep_sub if ep_sub else f"{idx + 1}화"
             body_lines = lines[1:]
 
         body_text = "\n".join(body_lines).strip()
-        step_label = STEP_NAMES[idx] if idx < len(STEP_NAMES) else f"{idx + 1}화"
 
         episodes.append(
             {
                 "number": idx + 1,
-                "step": step_label,
                 "title": ep_title,
                 "body": body_text,
                 "rawCopy": block_text,
-                "charCount": len(block_text),
             }
         )
 
@@ -124,7 +108,7 @@ def parse_novel(folder: pathlib.Path) -> dict | None:
             "order": 0,
             "category": infer_category(genre),
             "date": date.today().isoformat(),
-            "badge": genre.split("/")[0].strip(),
+            "badge": genre,
         },
     )
 
